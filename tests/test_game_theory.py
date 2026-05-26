@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from red_vs_blue.src.game_theory import evaluate_voting_strategy, compute_sweep
+from src.game_theory import evaluate_voting_strategy, compute_sweep
 
 def test_population_validation():
     """Test that invalid population sizes are rejected."""
