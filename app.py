@@ -21,6 +21,9 @@ with st.sidebar:
     
     # N is strictly bounded to an integer >= 2
     N = st.number_input("Total Population (N)", min_value=2, max_value=100000, value=100, step=1)
+
+    # tau is structly bounded as a probability [0.0, 1.0]
+    tau = st.slider("Threshold of Voters % (tau)", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
     
     # Gamma is strictly bounded as a probability [0.0, 1.0]
     gamma = st.slider("Belief of Red Voters % (γ)", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
@@ -32,10 +35,10 @@ with st.sidebar:
 # 3. Execution Layer 
 try:
     # --- Single-Point Strategic Evaluation ---
-    st.subheader("1. Strategic Decision Output")
+    st.subheader("Strategic Decision Output")
     
     # Calculate expected utilities using your game_theory logic
-    result = evaluate_voting_strategy(N=N, phi1=phi1, phi2=phi2, gamma=gamma)
+    result = evaluate_voting_strategy(N=N, phi1=phi1, phi2=phi2, gamma=gamma, threshold=tau)
     
     col1, col2, col3 = st.columns(3)
     col1.metric("Expected Utility (Red)", f"{result['Expected_Utility_Red']:.4f}")
@@ -54,11 +57,11 @@ try:
 
     # --- Parameter Space Sweep Visualization ---
     st.divider()
-    st.subheader("2. Parameter Space Sweep")
+    st.subheader("Parameter Space Sweep")
     st.write("Visualizing the expected utility difference across a grid of beliefs ($\gamma$) and weight ratios ($\phi_1/\phi_2$).")
     
     # Compute the 2D grid data
-    sweep_data = compute_sweep(N=N, resolution=100, ratio_min=0.1, ratio_max=5.0, ratio_scale="linear")
+    sweep_data = compute_sweep(N=N, resolution=100, ratio_min=0.1, ratio_max=5.0, ratio_scale="linear", threshold=tau)
     
     # Call your plotting logic
     plot_sweep(sweep_data)
