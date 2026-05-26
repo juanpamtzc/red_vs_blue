@@ -8,13 +8,11 @@ from src.plotting import plot_sweep
 
 # 1. Setup the Page
 st.set_page_config(page_title="Blue vs. Red Optimizer", page_icon="🔵", layout="wide")
-# Suppress Streamlit's warning about Matplotlib global figures
-st.set_option('deprecation.showPyplotGlobalUse', False)
 
 st.title("Blue vs. Red: Expected Utility Optimizer")
 st.markdown("""
 This application models the optimal strategic choice in a population-scale survival scenario. 
-Adjust the parameters in the sidebar to compute the utility difference $dU = U(R) - U(B)$ and view the parameter sweep.
+Adjust the parameters in the sidebar to compute the utility difference $\Delta E = U(R) - U(B)$ and view the parameter sweep.
 """)
 
 # 2. Sidebar for Inputs (Strictly Bounded Security)
@@ -57,17 +55,19 @@ try:
     # --- Parameter Space Sweep Visualization ---
     st.divider()
     st.subheader("2. Parameter Space Sweep")
-    st.write("Visualizing the expected utility difference across a grid of beliefs (γ) and weight ratios (φ1/φ2).")
+    st.write("Visualizing the expected utility difference across a grid of beliefs ($\gamma$) and weight ratios ($\phi_1/\phi_2$).")
     
     # Compute the 2D grid data
     sweep_data = compute_sweep(N=N, resolution=100, ratio_min=0.1, ratio_max=5.0, ratio_scale="linear")
     
-    # Call your plotting logic. Because plot_sweep generates a figure and calls plt.show(), 
-    # st.pyplot() captures that active global figure and renders it safely to the web.
+    # Call your plotting logic
     plot_sweep(sweep_data)
-    st.pyplot()
+    
+    # THREAD-SAFE FIX: Grab the current global figure and pass it explicitly to Streamlit
+    fig = plt.gcf()
+    st.pyplot(fig)
 
 except ValueError as e:
     st.error(f"Input Error: {e}")
 except Exception as e:
-    st.error(f"An unexpected error occurred during execution.")
+    st.error("An unexpected error occurred during execution.")
