@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 from typing import Optional
 
-def plot_sweep(sweep_result: dict, vmax_clip: Optional[float] = 5.0, yscale: Optional[str] = None):
+def plot_sweep(sweep_result: dict, 
+               vmax_clip: Optional[float] = 5.0, 
+               yscale: Optional[str] = None) -> None:
     """
     Renders the parameter sweep heat-map from the dict returned by compute_sweep().
 
