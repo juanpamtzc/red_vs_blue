@@ -3,7 +3,11 @@ import matplotlib.pyplot as plt
 from scipy.stats import binom
 from typing import Optional
 
-def compute_expected_utilities(N: int, phi1: float, phi2: float, gamma: float, threshold: Optional[float] = 0.5):
+def compute_expected_utilities(N: int, 
+                               phi1: float, 
+                               phi2: float, 
+                               gamma: float, 
+                               threshold: Optional[float] = 0.5) -> tuple:
     """
     Core vectorized computation of expected utilities for Red and Blue.
 
@@ -41,7 +45,11 @@ def compute_expected_utilities(N: int, phi1: float, phi2: float, gamma: float, t
     E_blue = np.sum(probabilities * u_blue, axis=-1)
     return E_red, E_blue
 
-def evaluate_voting_strategy(N: int, phi1: float, phi2: float, gamma: float, threshold: Optional[float] = 0.5):
+def evaluate_voting_strategy(N: int, 
+                             phi1: float, 
+                             phi2: float, 
+                             gamma: float, 
+                             threshold: Optional[float] = 0.5) -> dict:
     """
     Evaluates the expected utility of voting Red vs. Blue for a single parameter point.
 
@@ -78,7 +86,12 @@ def evaluate_voting_strategy(N: int, phi1: float, phi2: float, gamma: float, thr
         "Optimal_Choice":        decision,
     }
 
-def compute_sweep(N: Optional[int] = 100, resolution: Optional[int] = 300, ratio_min: Optional[float] = 1e-3, ratio_max: Optional[float] = 10.0, ratio_scale: Optional[str] = "linear", threshold: Optional[float] = 0.5):
+def compute_sweep(N: Optional[int] = 100, 
+                  resolution: Optional[int] = 300, 
+                  ratio_min: Optional[float] = 1e-3, 
+                  ratio_max: Optional[float] = 10.0, 
+                  ratio_scale: Optional[str] = "linear", 
+                  threshold: Optional[float] = 0.5) -> dict:
     """
     Computes the delta_E grid over (gamma, phi1/phi2 ratio) parameter space.
 
